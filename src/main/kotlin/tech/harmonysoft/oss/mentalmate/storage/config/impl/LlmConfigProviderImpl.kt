@@ -16,9 +16,6 @@ class LlmConfigProviderImpl(
     factory: ConfigProviderFactory
 ) : DelegatingConfigProvider<LlmConfig>(
     factory.build(RawLlmConfig::class.java, "llm") { raw ->
-        if (raw.prompt.indexOf("%s") < 0) {
-            throw IllegalArgumentException("configured LLM prompt doens't have input data placeholder (%s)")
-        }
         if (raw.responseChunkSeparator.isBlank()) {
             throw IllegalArgumentException("LLM response chunk separator must not be blank")
         }

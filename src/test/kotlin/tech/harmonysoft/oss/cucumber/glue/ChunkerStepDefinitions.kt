@@ -5,12 +5,15 @@ import io.cucumber.java.en.When
 import io.cucumber.spring.CucumberContextConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import tech.harmonysoft.oss.mentalmate.ChunkerTestApplication
+import org.springframework.test.context.ActiveProfiles
+import tech.harmonysoft.oss.mentalmate.ChunkerApplication
 
 @CucumberContextConfiguration
 @SpringBootTest(
-    classes = [ ChunkerTestApplication::class ]
+    classes = [ ChunkerApplication::class ],
+    webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
 )
+@ActiveProfiles("cucumber")
 class ChunkerStepDefinitions {
 
     @Autowired private lateinit var http: HttpClientStepDefinitions

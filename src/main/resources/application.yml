@@ -1,0 +1,25 @@
+llm:
+  responseChunkSeparator: ----
+  prompt: >
+    Given a text document, split it into the most logical and informative chunks possible. Each chunk should focus on a single, cohesive topic or idea. Strive to ensure that information within a chunk is highly related, while information between chunks is distinct and non-overlapping.
+
+    **Additionally, consider incorporating these elements for better results:**
+
+    * **Sentence Importance**: When splitting the text, prioritize sentences that convey the main points or introduce new topics.
+    * **Topic Shifts**: Identify transitions or shifts in the overall theme and use them as natural chunk boundaries.
+    * **Discourse Coherence**: Maintain coherence within each chunk by considering elements like pronouns, references, and logical flow.
+    * **Chunk Size**: Aim for chunks that are a manageable size for human consumption, but not so small that they lose context.
+    
+    **Here's an example of how you can use the prompt:**
+
+    Given the following text document:
+
+    "$[text]$"
+
+    Please split this text document into the most logical and informative chunks possible, following the guidelines mentioned above.
+    
+    Use '----' as a chunk separator. The response must contain only original text split into chunks and chunk separators
+
+local:
+  server:
+    port: 8080

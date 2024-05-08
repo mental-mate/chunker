@@ -1,7 +1,7 @@
 version = "1.0.0"
 
-val harmonysoftLibsVersion by extra { "3.1.0" }
-val mentalMateLibrariesVersion by extra { "2.1.0" }
+val harmonysoftLibsVersion by extra { "3.3.0" }
+val mentalMateLibrariesVersion by extra { "2.5.0" }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -19,7 +19,5 @@ dependencies {
     testImplementation("tech.harmonysoft:mental-mate-meta-storage-mongo:$mentalMateLibrariesVersion")
     testImplementation("tech.harmonysoft:mental-mate-llm-test:$mentalMateLibrariesVersion")
 
-    testImplementation("tech.harmonysoft:harmonysoft-mongo-cucumber:$harmonysoftLibsVersion")
-    testImplementation("tech.harmonysoft:harmonysoft-mongo-environment-testcontainers:$harmonysoftLibsVersion")
     testImplementation("tech.harmonysoft:harmonysoft-http-client-apache-cucumber-spring:$harmonysoftLibsVersion")
 }

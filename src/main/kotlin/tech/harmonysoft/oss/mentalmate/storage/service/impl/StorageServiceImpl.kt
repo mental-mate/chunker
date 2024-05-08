@@ -6,7 +6,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import tech.harmonysoft.oss.mentalmate.storage.meta.MetaStorage
 import org.slf4j.Logger
 import org.springframework.stereotype.Component
 import tech.harmonysoft.oss.common.ProcessingResult
@@ -14,11 +13,12 @@ import tech.harmonysoft.oss.common.execution.ExecutionContextManager
 import tech.harmonysoft.oss.common.execution.withContext
 import tech.harmonysoft.oss.mentalmate.context.ContextKey
 import tech.harmonysoft.oss.mentalmate.llm.Llm
+import tech.harmonysoft.oss.mentalmate.storage.config.LlmConfigProvider
+import tech.harmonysoft.oss.mentalmate.storage.config.StorageConfigProvider
 import tech.harmonysoft.oss.mentalmate.storage.data.DataStorage
 import tech.harmonysoft.oss.mentalmate.storage.data.DataStorageDir
 import tech.harmonysoft.oss.mentalmate.storage.data.DataStorageFile
-import tech.harmonysoft.oss.mentalmate.storage.config.LlmConfigProvider
-import tech.harmonysoft.oss.mentalmate.storage.config.StorageConfigProvider
+import tech.harmonysoft.oss.mentalmate.storage.meta.MetaStorage
 import tech.harmonysoft.oss.mentalmate.storage.model.Stage
 import tech.harmonysoft.oss.mentalmate.storage.service.StorageService
 import tech.harmonysoft.oss.mentalmate.util.checksum.ChecksumUtil
@@ -46,7 +46,7 @@ class StorageServiceImpl(
         logger.info("found {} input files to chunk candidates", inputFiles.size)
         val partitioned = partition(inputFiles)
         logger.info(
-            "found {} files to chunk: %n  *) {} %n{} chunked files: %n{} %n{} stuck files: %n{}",
+            "found {} files to chunk:\n  *) {}\n{} chunked files: %n{} %n{} stuck files: %n{}",
             partitioned.toProcess.size, partitioned.toProcess.joinToString("\n  *) ") { it.file.name },
             partitioned.processed.size, partitioned.processed.joinToString("\n  *) ") { it.file.name },
             partitioned.stuck.size, partitioned.stuck.joinToString("\n  *) ") { it.file.name },
@@ -143,8 +143,8 @@ class StorageServiceImpl(
             return ProcessingResult.failure(error)
         }
 
-        val response = llm.ask(String.format(llmConfig.data.prompt, file.file.getContent().reader().readText()))
-        val chunks = response.split(llmConfig.data.responseChunkSeparator).filter { it.isNotBlank() }
+        val response = llm.ask(llmConfig.data.prompt, mapOf("text" to file.file.getContent().reader().readText()))
+        val chunks = response.split(llmConfig.data.responseChunkSeparator).map { it.trim() }.filter { it.isNotBlank() }
         runBlocking {
             val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
             val outputDir = getOutputDir(file)
