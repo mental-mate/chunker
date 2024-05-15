@@ -28,7 +28,7 @@ import tech.harmonysoft.oss.mentalmate.util.time.TimeHelper
 class StorageServiceImpl(
     private val storageConfig: StorageConfigProvider,
     private val llmConfig: LlmConfigProvider,
-    private val dataStorage: DataStorage,
+    private val dataStorage: DataStorage<*>,
     private val metaStorage: MetaStorage,
     private val llm: Llm,
     private val timeHelper: TimeHelper,
@@ -150,7 +150,7 @@ class StorageServiceImpl(
             val outputDir = getOutputDir(file)
             chunks.mapIndexed { index, chunk ->
                 coroutineScope.async {
-                    dataStorage.createFile(outputDir, "chunk-$index", chunk)
+                    dataStorage.createFile(outputDir, "chunk-$index", chunk.toByteArray())
                 }
             }
         }

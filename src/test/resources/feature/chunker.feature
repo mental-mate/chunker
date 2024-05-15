@@ -2,7 +2,7 @@ Feature: Chunker tests
 
   Scenario: Main success scenario
 
-    Given there is a data file /source with the following content:
+    Given there is a data file /to-chunk/source with the following content:
       """
       line1
       line2
@@ -20,6 +20,6 @@ Feature: Chunker tests
     Then last HTTP POST request returns the following JSON:
       """
       [
-        "/source"
+        "/to-chunk/source"
       ]
       """

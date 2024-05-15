@@ -14,7 +14,7 @@ data class RawStorageConfig(
 @Component
 class StorageConfigProviderImpl(
     factory: ConfigProviderFactory,
-    storage: DataStorage
+    storage: DataStorage<*>
 ) : DelegatingConfigProvider<StorageConfig>(
     factory.build(RawStorageConfig::class.java, "storage.raw") { raw ->
         StorageConfig(

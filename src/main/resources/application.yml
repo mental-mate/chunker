@@ -23,3 +23,7 @@ llm:
 local:
   server:
     port: 8080
+
+storage:
+  raw:
+    inputDir: to-chunk
